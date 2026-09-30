@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Почта для Python</title>
+<meta name="description" content="Интерактивный тренажёр: API-запросы из Python и библиотека requests. Практическая работа № 4.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232346B8'/%3E%3Cpath d='M6 10h20v13H6z' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M6 10l10 8 10-8' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script>try{var t=localStorage.getItem("pp-theme");if(t)document.documentElement.setAttribute("data-theme",JSON.parse(t));}catch(e){}</script>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#top"><span class="brand-stamp" aria-hidden="true">✉</span>Почта для Python</a>
+    <nav aria-label="Разделы">
+      <a href="#how">Как устроено</a>
+      <a href="#builder">Конструктор</a>
+      <a href="#tasks">10 заданий</a>
+      <a href="#games">Игры</a>
+      <a href="#faq">Вопросы</a>
+      <a href="#cheat">Шпаргалка</a>
+    </nav>
+    <div class="top-tools">
+      <div class="hud" id="hud">
+        <button class="hud-btn" type="button" aria-expanded="false" aria-haspopup="true" title="Ваш прогресс">
+          <span class="hud-lvl">Стажёр</span><span class="hud-bar"><i></i></span><span class="hud-xp">0 XP</span>
+        </button>
+        <div class="hud-pop" hidden>
+          <h3>Ваш прогресс</h3>
+          <p class="note hud-next"></p>
+          <div class="badges"></div>
+          <div class="badge-list"></div>
+          <button class="btn ghost hud-reset" type="button" style="font-size:.8rem;padding:6px 12px">Сбросить прогресс</button>
+        </div>
+      </div>
+      <a class="iconbtn" href="slides.html" title="Режим презентации для урока">▶<span class="pres-lbl"> Презентация</span></a>
+      <button class="iconbtn" id="themeBtn" type="button" aria-label="Сменить тему">☾</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Практическая работа № 4 · 6 часов</span>
+        <h1 id="h1">Запрос к API — это <span class="hl">письмо</span> серверу</h1>
+        <p class="lead">Ваша программа на Python пишет письмо: кому (адрес), что сделать (метод), пометки на конверте (заголовки) и вложение (данные). Сервер отвечает письмом со штампом: «готово», «не найдено», «нет доступа». Библиотека <code>requests</code> — это почтальон, который носит письма туда и обратно.</p>
+        <div class="hero-cta">
+          <a class="btn big" href="#builder">✉ Собрать своё письмо</a>
+          <a class="btn ghost big" href="#games">Сразу в игры</a>
+        </div>
+        <div class="facts"><span><b>10</b>заданий с разбором</span><span><b>3</b>игры</span><span><b>2</b>сервера: учебный и настоящий</span></div>
+      </div>
+
+      <div class="scene" aria-label="Анимация: как запрос идёт на сервер и обратно">
+        <div class="presets" role="group" aria-label="Выберите письмо">
+          <button class="chip" type="button" data-p="0" aria-pressed="true">Получить пользователя</button>
+          <button class="chip" type="button" data-p="1" aria-pressed="false">Создать пост</button>
+          <button class="chip" type="button" data-p="2" aria-pressed="false">Опечатка в адресе</button>
+          <button class="chip" type="button" data-p="3" aria-pressed="false">Без токена</button>
+        </div>
+        <svg viewBox="0 0 600 250" role="img" aria-labelledby="sceneTitle">
+          <title id="sceneTitle">Клиент на Python отправляет запрос на сервер и получает ответ</title>
+          <!-- дуги -->
+          <path id="pathGo" class="svg-line" d="M180 92 C 260 10, 350 10, 428 78"/>
+          <path class="svg-flow" d="M180 92 C 260 10, 350 10, 428 78"/>
+          <path id="pathBack" class="svg-line" d="M428 158 C 350 240, 260 240, 180 148"/>
+          <path class="svg-flow back" d="M428 158 C 350 240, 260 240, 180 148"/>
+          <text class="svg-mut" x="304" y="24" text-anchor="middle">запрос →</text>
+          <text class="svg-mut" x="304" y="244" text-anchor="middle">← ответ</text>
+          <!-- ноутбук -->
+          <rect class="svg-fill" x="24" y="62" width="150" height="98" rx="8"/>
+          <rect class="svg-soft" x="32" y="70" width="134" height="82" rx="4"/>
+          <rect class="svg-codeline" x="40" y="80" width="46" height="6" rx="3"/>
+          <rect class="svg-codeline" x="40" y="94" width="92" height="6" rx="3" style="opacity:.3"/>
+          <rect class="svg-codeline" x="40" y="108" width="74" height="6" rx="3" style="opacity:.3"/>
+          <rect class="svg-codeline" x="40" y="122" width="56" height="6" rx="3" style="opacity:.3"/>
+          <rect id="cliCursor" class="svg-codeline" x="40" y="136" width="8" height="8" style="opacity:.9"/>
+          <path class="svg-fill" d="M12 160 H186 L196 174 H2 Z"/>
+          <text class="svg-lbl" x="99" y="200" text-anchor="middle">Клиент</text>
+          <text class="svg-mut" x="99" y="216" text-anchor="middle">ваш скрипт на Python</text>
+          <!-- сервер -->
+          <g>
+            <rect class="svg-fill" x="432" y="40" width="142" height="44" rx="6"/>
+            <rect class="svg-fill" x="432" y="92" width="142" height="44" rx="6"/>
+            <rect class="svg-fill" x="432" y="144" width="142" height="44" rx="6"/>
+            <circle id="led1" class="svg-led on" cx="452" cy="62" r="5"/>
+            <circle id="led2" class="svg-led on" cx="452" cy="114" r="5"/>
+            <circle id="led3" class="svg-led on" cx="452" cy="166" r="5"/>
+            <rect class="svg-soft" x="468" y="57" width="90" height="10" rx="3"/>
+            <rect class="svg-soft" x="468" y="109" width="90" height="10" rx="3"/>
+            <rect class="svg-soft" x="468" y="161" width="90" height="10" rx="3"/>
+          </g>
+          <text class="svg-lbl" x="503" y="212" text-anchor="middle">Сервер</text>
+          <text id="srvName" class="svg-mut" x="503" y="228" text-anchor="middle">jsonplaceholder</text>
+          <!-- конверт -->
+          <g id="svgEnv" transform="translate(180 92)" style="opacity:0">
+            <rect class="svg-fill" x="-24" y="-16" width="48" height="32" rx="3"/>
+            <polyline class="svg-ink" points="-24,-16 0,3 24,-16"/>
+            <rect id="svgTag" x="-24" y="-38" width="48" height="18" rx="4" fill="var(--ok)"/>
+            <text id="svgTagTxt" x="0" y="-25" text-anchor="middle" style="fill:#fff;font-family:var(--mono);font-size:11px;font-weight:700">GET</text>
+          </g>
+        </svg>
+        <div class="scene-io">
+          <pre class="code" id="heroCode"></pre>
+          <div class="term-out" id="heroOut"><span class="prompt">&gt;&gt;&gt; нажмите «Отправить»</span></div>
+        </div>
+        <div class="row">
+          <button class="btn" id="heroBtn" type="button">✉ Отправить</button>
+          <span class="hint" id="heroHint">Сервер найдёт пользователя №1 и пришлёт его имя.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== HOW ===================== -->
+  <section id="how" aria-labelledby="how-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 1 · Словарь на пальцах</span>
+      <h2 id="how-h">Восемь слов, без которых тема не понятна</h2>
+      <p class="lead">Сверху — как это выглядит на почте, снизу — как это называется в программировании.</p>
+    </div>
+    <div class="gloss">
+      <div class="term"><div class="term-in"><span class="ico">🧑‍💻</span><b>Клиент</b><span class="life">Тот, кто пишет письмо и ждёт ответа.</span><span class="tech">Программа, которая просит данные. У нас это скрипт на Python.</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">🏤</span><b>Сервер</b><span class="life">Почтовое отделение: принимает письма и отвечает на них.</span><span class="tech">Компьютер в интернете, который хранит данные и выполняет запросы.</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">📜</span><b>API</b><span class="life">Правила отделения: какие письма принимают и что пришлют в ответ.</span><span class="tech">Набор адресов и методов, через которые программы общаются с сервером.</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">🏷</span><b>URL (эндпоинт)</b><span class="life">Адрес на конверте: город, улица, квартира.</span><span class="tech"><code>https://jsonplaceholder.typicode.com/users/1</code></span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">🔖</span><b>HTTP-метод</b><span class="life">Что нужно сделать: прислать, принять, заменить, уничтожить.</span><span class="tech"><code>GET</code> получить · <code>POST</code> создать · <code>PUT</code> обновить · <code>DELETE</code> удалить</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">📝</span><b>Заголовки</b><span class="life">Пометки на конверте: «от кого», «срочно», «пропуск».</span><span class="tech"><code>User-Agent</code> — кто пишет, <code>Authorization</code> — токен доступа.</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">📦</span><b>Тело и JSON</b><span class="life">Содержимое конверта — заполненная анкета.</span><span class="tech">Данные в формате JSON: <code>{"name": "Leanne"}</code>. В Python это словарь.</span></div></div>
+      <div class="term"><div class="term-in"><span class="ico">🟩</span><b>Статус-код</b><span class="life">Штамп на ответе: «вручено», «адресат не найден».</span><span class="tech"><code>200</code> успех · <code>404</code> не найдено · <code>500</code> сломался сервер</span></div></div>
+    </div>
+
+    <div class="anatomy">
+      <div class="sec-head"><span class="eyebrow">Разбор адреса</span><h3 style="font-size:1.25rem">Из чего состоит URL. Нажмите на любую часть</h3></div>
+      <div class="url-parts" id="urlParts"></div>
+      <div class="up-expl" id="upExpl">Адрес читается как на конверте: сначала способ доставки, потом город, потом улица и квартира.</div>
+    </div>
+
+    <div class="sec-head"><h3 style="font-size:1.25rem">Штампы на ответе: первая цифра говорит главное</h3></div>
+    <div class="legend">
+      <div class="lg" style="--c:var(--ok)"><b>2xx</b><p>Успех. 200 — готово, 201 — создано, 204 — готово, тело пустое.</p></div>
+      <div class="lg" style="--c:var(--info)"><b>3xx</b><p>Переадресация. Письмо переслали по новому адресу, requests идёт туда сам.</p></div>
+      <div class="lg" style="--c:var(--warn)"><b>4xx</b><p>Ошибка клиента, то есть ваша: неверный адрес, нет доступа, слишком часто.</p></div>
+      <div class="lg" style="--c:var(--stamp)"><b>5xx</b><p>Ошибка сервера. Вы всё сделали правильно, у них что-то сломалось.</p></div>
+    </div>
+  </section>
+
+  <!-- ===================== BUILDER ===================== -->
+  <section id="builder" aria-labelledby="b-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 2 · Песочница</span>
+      <h2 id="b-h">Конструктор письма</h2>
+      <p class="lead">Соберите запрос и отправьте его. Справа видно конверт, готовый код на Python и текст, который реально уходит по сети. Режим «Настоящий интернет» отправляет запрос на живой сервер прямо из браузера.</p>
+    </div>
+    <div class="builder">
+      <div class="panel">
+        <div class="field">
+          <span class="lbl">Куда отправлять</span>
+          <div class="switch" role="group" aria-label="Режим сервера">
+            <button type="button" id="modeSim" aria-pressed="true">🧪 Учебный сервер</button>
+            <button type="button" id="modeLive" aria-pressed="false">🌐 Настоящий интернет</button>
+          </div>
+          <span class="note" id="modeNote">Работает без интернета. Отвечает так же, как настоящий сервер, и объясняет свой ответ.</span>
+        </div>
+        <div class="field">
+          <span class="lbl">Быстрые примеры</span>
+          <div class="presets-b" id="bPresets"></div>
+        </div>
+        <div class="field">
+          <span class="lbl" id="m-lbl">Метод (что сделать)</span>
+          <div class="methods" role="group" aria-labelledby="m-lbl" id="methods"></div>
+        </div>
+        <div class="field">
+          <label for="path">Адрес (URL)</label>
+          <div class="urlbox">
+            <select id="host" aria-label="Сервер"><option value="jp">jsonplaceholder.typicode.com</option><option value="hb">httpbin.org</option></select>
+            <input type="text" id="path" value="/posts/1" list="paths" aria-label="Путь" spellcheck="false">
+          </div>
+          <datalist id="paths"></datalist>
+          <span class="note" id="hostNote"></span>
+        </div>
+        <div class="field">
+          <span class="lbl">Параметры (params)</span>
+          <div class="kv">
+            <input type="checkbox" id="pOn" aria-label="Включить параметр">
+            <input type="text" id="pKey" value="userId" aria-label="Имя параметра">
+            <input type="text" id="pVal" value="1" aria-label="Значение параметра">
+          </div>
+          <span class="note">Допишутся к адресу после «?». Так фильтруют списки.</span>
+        </div>
+        <div class="field">
+          <span class="lbl">Заголовок (пометка на конверте)</span>
+          <div class="kv">
+            <input type="checkbox" id="hOn" aria-label="Включить заголовок">
+            <input type="text" id="hKey" value="User-Agent" aria-label="Имя заголовка">
+            <input type="text" id="hVal" value="MyPythonApp" aria-label="Значение заголовка">
+          </div>
+        </div>
+        <div class="field">
+          <label for="body">Тело запроса (JSON)</label>
+          <textarea id="body" spellcheck="false">{"title": "foo", "body": "bar", "userId": 1}</textarea>
+          <span class="note" id="bodyNote"></span>
+        </div>
+        <div class="row">
+          <button class="btn big" type="button" id="sendBtn">✉ Отправить</button>
+          <button class="btn ghost" type="button" id="resetBtn">Сбросить</button>
+        </div>
+      </div>
+
+      <div class="views">
+        <div class="tabs" role="tablist" aria-label="Вид запроса">
+          <button class="tab" role="tab" aria-selected="true" data-view="env" type="button">✉ Конверт</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="py" type="button">🐍 Код на Python</button>
+          <button class="tab" role="tab" aria-selected="false" data-view="raw" type="button">🔌 Что уходит по сети</button>
+        </div>
+        <div id="view-env"></div>
+        <div id="view-py" hidden><div class="code-wrap"><pre class="code" id="pyCode"></pre><button class="copy" type="button" data-copy="pyCode">Копировать</button></div></div>
+        <div id="view-raw" hidden><pre class="code" id="rawCode"></pre><p class="note" style="margin-top:8px">Это настоящий формат HTTP: первая строка — метод и адрес, дальше заголовки, после пустой строки тело. requests собирает этот текст за вас.</p></div>
+        <div class="flight" id="flight" aria-hidden="true"><span>🐍 Python</span><span class="dot" id="flightDot">✉</span><span>Сервер 🏤</span></div>
+        <div id="respBox"><p class="empty">Нажмите «Отправить», и здесь появится ответ сервера.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TASKS ===================== -->
+  <section id="tasks" aria-labelledby="t-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 3 · Рабочее задание из методички</span>
+      <h2 id="t-h">10 заданий с разбором</h2>
+      <p class="lead">Выберите задание. Кнопка «Пошагово» проходит код по одной строке и объясняет каждую. Кнопка «Запустить» показывает, что напечатает Python.</p>
+    </div>
+    <div class="tasklist" role="tablist" aria-label="Задания" id="taskList"></div>
+    <div class="panel" id="taskPanel"></div>
+  </section>
+
+  <!-- ===================== GAMES ===================== -->
+  <section id="games" aria-labelledby="g-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 4 · Проверь себя в игре</span>
+      <h2 id="g-h">Три игры про запросы</h2>
+    </div>
+    <div class="game-tabs" role="tablist" aria-label="Игры">
+      <button class="game-tab" role="tab" type="button" data-g="letter" aria-selected="true"><span class="gi">✉</span><span><b>Почтальон</b><span>Соберите письмо под задачу</span></span></button>
+      <button class="game-tab" role="tab" type="button" data-g="codes" aria-selected="false"><span class="gi">🟩</span><span><b>Какой штамп?</b><span>Угадайте статус-код на время</span></span></button>
+      <button class="game-tab" role="tab" type="button" data-g="bugs" aria-selected="false"><span class="gi">🐞</span><span><b>Найди ошибку</b><span>Нажмите на строку с багом</span></span></button>
+    </div>
+    <div id="game-letter"></div>
+    <div id="game-codes" hidden></div>
+    <div id="game-bugs" hidden></div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section id="faq" aria-labelledby="f-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 5 · Контрольные вопросы</span>
+      <h2 id="f-h">Ответы на вопросы из методички</h2>
+      <p class="lead">Сначала ответьте сами, потом раскройте ответ.</p>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </section>
+
+  <!-- ===================== CHEAT ===================== -->
+  <section id="cheat" aria-labelledby="ch-h">
+    <div class="sec-head">
+      <span class="eyebrow">Часть 6 · Шпаргалка</span>
+      <h2 id="ch-h">Всё главное на одном экране</h2>
+    </div>
+    <div class="cheat" id="cheatList"></div>
+  </section>
+
+  <footer class="footer">
+    <span>Практикум ДГТУ «Формирование базы знаний на основе модели искусственного интеллекта», практическая работа № 4.</span>
+    <span>Учебный сервер имитирует jsonplaceholder.typicode.com и httpbin.org. Настоящие запросы из Python отправляйте в Google Colab или в Python 3.12 после <code>pip install requests</code>.</span>
+  </footer>
+</main>
+
+<script src="js/core.js"></script>
+<script src="js/app.js"></script>
+<script src="js/games.js"></script>
+</body>
+</html>

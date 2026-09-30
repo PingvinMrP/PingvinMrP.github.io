@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Почта для Python · презентация</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%232346B8'/%3E%3Cpath d='M6 10h20v13H6z' fill='none' stroke='white' stroke-width='2'/%3E%3Cpath d='M6 10l10 8 10-8' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/slides.css">
+<script>try{var t=localStorage.getItem("pp-theme");if(t)document.documentElement.setAttribute("data-theme",JSON.parse(t));}catch(e){}</script>
+</head>
+<body class="deck">
+
+<div class="deck-top">
+  <a class="brand" href="index.html"><span class="brand-stamp" aria-hidden="true">✉</span>Почта для Python</a>
+  <span class="keys"><kbd>←</kbd> <kbd>→</kbd> листать · <kbd>F</kbd> полный экран · <kbd>N</kbd> заметки</span>
+  <div class="row">
+    <button class="iconbtn" id="notesBtn" type="button">Заметки</button>
+    <button class="iconbtn" id="fsBtn" type="button">⛶</button>
+    <button class="iconbtn" id="themeBtn" type="button" aria-label="Сменить тему">☾</button>
+  </div>
+</div>
+
+<div class="deck-stage" id="stage">
+
+  <section class="slide" data-notes="Начните с вопроса классу: откуда приложение погоды на телефоне знает температуру? Ответ: оно отправляет запрос на сервер. Сегодня научимся делать это из Python.">
+    <span class="kicker">Практическая работа № 4</span>
+    <h1>API-запросы из Python</h1>
+    <p class="lead">Библиотека <code>requests</code>: как программа пишет письма серверу и читает ответы.</p>
+  </section>
+
+  <section class="slide" data-notes="Приведите примеры из жизни класса: погода, карты, курс валют, GigaChat. Везде одна схема: программа просит — сервер отвечает.">
+    <span class="kicker">Зачем это нужно</span>
+    <h2>Программы постоянно переписываются друг с другом</h2>
+    <div class="big-list">
+      <div class="big-item frag"><b>🌦 Погода</b><span>Приложение спрашивает сервер: «какая погода в Ростове?»</span></div>
+      <div class="big-item frag"><b>🗺 Карты</b><span>«Как проехать от дома до ДГТУ?»</span></div>
+      <div class="big-item frag"><b>💱 Курсы валют</b><span>«Сколько сегодня стоит доллар?»</span></div>
+      <div class="big-item frag"><b>🤖 GigaChat</b><span>«Ответь на вопрос». Это следующая, пятая работа.</span></div>
+    </div>
+  </section>
+
+  <section class="slide" data-notes="Главная метафора урока. Клиент — тот, кто пишет. Сервер — почтовое отделение. requests — почтальон. Повторяйте эту метафору на каждом следующем слайде.">
+    <span class="kicker">Клиент-серверная архитектура</span>
+    <h2>Запрос — это письмо, ответ — письмо обратно</h2>
+    <div class="flow">
+      <div class="box frag">🧑‍💻 Клиент<small>ваш код на Python</small></div>
+      <span class="arr frag">— ✉ запрос →</span>
+      <div class="box frag">🏤 Сервер<small>хранит данные</small></div>
+      <span class="arr frag">← ответ 200 ✉ —</span>
+    </div>
+    <p class="lead frag">Библиотека <code>requests</code> — это почтальон: носит письма туда и обратно.</p>
+  </section>
+
+  <section class="slide" data-notes="Нажимайте на части адреса, чтобы объяснить каждую. Аналогия: протокол — способ доставки, домен — город и отделение, путь — улица, номер — квартира, параметры — пометка «только первые две».">
+    <span class="kicker">Адрес на конверте</span>
+    <h2>Из чего состоит URL</h2>
+    <div class="url-parts" id="sUrl"></div>
+    <div class="up-expl" id="sUrlExpl">Нажмите на часть адреса.</div>
+  </section>
+
+  <section class="slide" data-notes="Четыре главных метода — четыре штампа. Спросите класс: каким методом отправить сообщение в чат? (POST). Каким удалить? (DELETE).">
+    <span class="kicker">HTTP-методы</span>
+    <h2>Что сделать с письмом: четыре штампа</h2>
+    <div class="stamp-row">
+      <div class="stamp frag" style="--mc:var(--ok)"><div>GET<small>получить</small></div></div>
+      <div class="stamp frag" style="--mc:var(--accent)"><div>POST<small>создать</small></div></div>
+      <div class="stamp frag" style="--mc:var(--warn)"><div>PUT<small>заменить</small></div></div>
+      <div class="stamp frag" style="--mc:var(--stamp)"><div>DELETE<small>удалить</small></div></div>
+    </div>
+    <p class="lead frag">GET читают, POST создают, PUT меняют, DELETE удаляют.</p>
+  </section>
+
+  <section class="slide" data-notes="Главное правило: первая цифра. 4xx — ошибся ты, 5xx — ошибся сервер. Спросите: кто виноват в 404? (клиент — опечатка в адресе).">
+    <span class="kicker">Статус-коды</span>
+    <h2>Штамп на ответе: смотрите на первую цифру</h2>
+    <div class="legend">
+      <div class="lg frag" style="--c:var(--ok)"><b>2xx</b><p>Успех. 200 OK, 201 Created.</p></div>
+      <div class="lg frag" style="--c:var(--info)"><b>3xx</b><p>Переадресация на новый адрес.</p></div>
+      <div class="lg frag" style="--c:var(--warn)"><b>4xx</b><p>Ошибка клиента: 404 не найдено, 401 нет доступа.</p></div>
+      <div class="lg frag" style="--c:var(--stamp)"><b>5xx</b><p>Ошибка сервера: 500 — сломалось у них.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-notes="JSON выглядит почти как словарь Python. Отличия: в JSON только двойные кавычки, true/false/null вместо True/False/None. response.json() переводит одно в другое.">
+    <span class="kicker">Формат данных</span>
+    <h2>JSON — это словарь Python в виде текста</h2>
+    <div class="two">
+      <div class="frag"><p class="note">Приходит с сервера (JSON):</p><pre class="code" data-json>{
+  "id": 1,
+  "name": "Leanne Graham",
+  "active": true,
+  "phone": null
+}</pre></div>
+      <div class="frag"><p class="note">После response.json() (словарь):</p><pre class="code" data-py>{'id': 1,
+ 'name': 'Leanne Graham',
+ 'active': True,
+ 'phone': None}
+
+user["name"]  # 'Leanne Graham'</pre></div>
+    </div>
+  </section>
+
+  <section class="slide" data-notes="Первый живой пример. Покажите в Colab или на сайте в разделе «Конструктор». Три строки: подключить, отправить, прочитать.">
+    <span class="kicker">Первый запрос</span>
+    <h2>Три строки: подключить, отправить, прочитать</h2>
+    <pre class="code" data-py>pip install requests          # один раз, в терминале
+
+import requests
+
+response = requests.get("https://jsonplaceholder.typicode.com/users/1")
+print(response.status_code)   # 200
+print(response.json()["name"])  # Leanne Graham</pre>
+  </section>
+
+  <section class="slide" data-notes="response — это всё письмо-ответ целиком. Чаще всего нужны status_code и json().">
+    <span class="kicker">Что лежит в ответе</span>
+    <h2>response — это конверт с ответом</h2>
+    <pre class="code" data-py>response.status_code   # штамп: 200, 404, 500…
+response.ok            # True, если код меньше 400
+response.json()        # содержимое как словарь или список
+response.text          # содержимое как простой текст
+response.headers       # пометки на конверте ответа
+response.url           # по какому адресу ходили</pre>
+  </section>
+
+  <section class="slide" data-notes="params — фильтр, дописывается после знака вопроса. headers — пометки на конверте, самый важный — Authorization с токеном, он нужен для GigaChat.">
+    <span class="kicker">Параметры и заголовки</span>
+    <h2>params уточняют запрос, headers подписывают конверт</h2>
+    <div class="two">
+      <div class="frag"><pre class="code" data-py># только посты пользователя 1
+requests.get(url + "/posts",
+             params={"userId": 1})
+# → …/posts?userId=1</pre></div>
+      <div class="frag"><pre class="code" data-py># пометки на конверте
+headers = {
+    "User-Agent": "MyPythonApp",
+    "Authorization": "Bearer токен",
+}
+requests.get(url, headers=headers)</pre></div>
+    </div>
+  </section>
+
+  <section class="slide" data-notes="Частая ошибка из методички: data= вместо json=. data отправляет форму, числа превращаются в строки. Для API используем json=.">
+    <span class="kicker">Отправка данных</span>
+    <h2>POST и PUT: данные едут во вложении</h2>
+    <pre class="code" data-py>new_post = {"title": "foo", "body": "bar", "userId": 1}
+
+r = requests.post(url + "/posts", json=new_post)   # создать → 201
+r = requests.put(url + "/posts/1", json=new_post)  # заменить → 200
+r = requests.delete(url + "/posts/1")              # удалить → 200
+
+# json=  отправляет настоящий JSON  ✓
+# data=  отправляет форму, userId станет строкой "1"</pre>
+  </section>
+
+  <section class="slide" data-notes="Ловушка: 404 сам по себе не ошибка для Python. Нужен raise_for_status(). timeout — чтобы программа не зависла навсегда.">
+    <span class="kicker">Обработка ошибок</span>
+    <h2>Письмо может потеряться — будьте готовы</h2>
+    <pre class="code" data-py>try:
+    r = requests.get(url + "/invalid-url", timeout=5)
+    r.raise_for_status()      # 4xx / 5xx → исключение
+    print(r.json())
+except requests.exceptions.RequestException as e:
+    print("Ошибка запроса:", e)</pre>
+    <p class="lead frag">Без <code>raise_for_status()</code> код 404 ошибкой не считается, и <code>except</code> не сработает.</p>
+  </section>
+
+  <section class="slide" data-notes="Переход к практике. Откройте сайт и дайте классу 10–15 минут на конструктор и игры, потом задания из методички.">
+    <span class="kicker">Практика</span>
+    <h2>Теперь сами: откройте тренажёр</h2>
+    <div class="big-list">
+      <div class="big-item"><b>✉ Конструктор</b><span>Соберите письмо и отправьте на настоящий сервер.</span></div>
+      <div class="big-item"><b>📚 10 заданий</b><span>Все задания методички с пошаговым разбором.</span></div>
+      <div class="big-item"><b>🎮 3 игры</b><span>Почтальон, статус-коды и охота на баги.</span></div>
+    </div>
+    <div class="row"><a class="btn big" href="index.html#builder">Открыть тренажёр →</a></div>
+  </section>
+
+  <div class="notes" id="notes" hidden></div>
+</div>
+
+<div class="deck-bottom">
+  <button class="iconbtn" id="prevBtn" type="button" aria-label="Назад">←</button>
+  <div class="deck-bar"><i id="deckBar"></i></div>
+  <span class="deck-count" id="deckCount">1 / 1</span>
+  <button class="iconbtn" id="nextBtn" type="button" aria-label="Вперёд">→</button>
+</div>
+
+<script src="js/core.js"></script>
+<script src="js/slides.js"></script>
+</body>
+</html>
